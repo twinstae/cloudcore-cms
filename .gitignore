@@ -41,6 +41,7 @@ tasks/
 
 # Monorepo generated files
 styled-system/
+storybook-static/
 apps/*/worker-configuration.d.ts
 .tsbuild/
 __screenshots__/

@@ -1,21 +1,15 @@
 import type { Tag } from "@cloudcore/schema";
-import { styled } from "styled-system/jsx";
 import {
-  tagListActions,
-  tagListDescription,
-  tagListHead,
-  tagListItem,
-  tagListList,
-  tagListRoot,
-} from "styled-system/recipes";
-import { Badge, Button, Heading } from "../ui";
-
-const Root = styled("section", tagListRoot);
-const List = styled("ul", tagListList);
-const Item = styled("li", tagListItem);
-const Head = styled("div", tagListHead);
-const Description = styled("p", tagListDescription);
-const Actions = styled("div", tagListActions);
+  Badge,
+  Button,
+  Heading,
+  TagListActions,
+  TagListDescription,
+  TagListHead,
+  TagListItem,
+  TagListList,
+  TagListRoot,
+} from "../ui";
 
 type TagListProps = {
   tags: readonly Tag[];
@@ -25,23 +19,23 @@ type TagListProps = {
 
 export function TagList({ tags, onEdit, onDelete }: TagListProps) {
   return (
-    <Root aria-label="Tag 목록">
+    <TagListRoot aria-label="Tag 목록">
       {tags.length === 0 ? (
         <p>아직 Tag가 없습니다</p>
       ) : (
-        <List>
+        <TagListList>
           {tags.map((tag) => (
-            <Item key={tag.id}>
-              <Head>
+            <TagListItem key={tag.id}>
+              <TagListHead>
                 <Heading as="h3" size="sm">
                   {tag.name}
                 </Heading>
                 <Badge asChild tone="neutral">
                   <output aria-label={`${tag.name} slug`}>{tag.slug}</output>
                 </Badge>
-              </Head>
-              {tag.description && <Description>{tag.description}</Description>}
-              <Actions>
+              </TagListHead>
+              {tag.description && <TagListDescription>{tag.description}</TagListDescription>}
+              <TagListActions>
                 <Button
                   size="sm"
                   tone="ghost"
@@ -58,11 +52,11 @@ export function TagList({ tags, onEdit, onDelete }: TagListProps) {
                 >
                   삭제
                 </Button>
-              </Actions>
-            </Item>
+              </TagListActions>
+            </TagListItem>
           ))}
-        </List>
+        </TagListList>
       )}
-    </Root>
+    </TagListRoot>
   );
 }

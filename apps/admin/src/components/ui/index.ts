@@ -6,4 +6,13 @@ export { Heading, type HeadingProps } from "./heading";
 export { HStack, type HStackProps } from "./hstack";
 export { Input, type InputProps } from "./input";
 export { Page, type PageProps } from "./page";
+export {
+  TagListActions,
+  TagListDescription,
+  TagListHead,
+  TagListItem,
+  TagListList,
+  TagListRoot,
+  type TagListRootProps,
+} from "./tag-list";
 export { Textarea, type TextareaProps } from "./textarea";

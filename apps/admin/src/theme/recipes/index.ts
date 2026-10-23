@@ -5,7 +5,6 @@ import { form } from "./form";
 import { heading } from "./heading";
 import { input } from "./input";
 import { page } from "./page";
-import { row } from "./row";
 import {
   tagListActions,
   tagListDescription,
@@ -27,7 +26,6 @@ export const recipes = {
   heading,
   input,
   page,
-  row,
   tagListActions,
   tagListDescription,
   tagListHead,

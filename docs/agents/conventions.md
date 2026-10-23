@@ -13,6 +13,7 @@
 - 기능 컴포넌트에서 `css()`/style props를 하드코딩하지 않는다. `src/components/ui`의 디자인 시스템 컴포넌트를 합성한다.
 - ui 컴포넌트는 `styled(ark.<el>, recipe)` 한 줄이다. 모양은 `src/theme/recipes/*`의 recipe에, 색은 `src/theme/semantic-tokens.ts`의 semantic token(라이트/다크)에 둔다.
 - 필요한 recipe가 없으면 기능 컴포넌트에 스타일을 쓰지 말고 recipe/variant를 추가한다.
+- 프리셋에 이미 있는 패턴(`hstack`, `vstack` 등)은 `styled-system/jsx`에서 재노출해 쓴다. 같은 이름의 recipe를 만들면 조용히 무시되어 스타일이 비어 버린다.
 - **ui 컴포넌트 추가 순서**: ① `src/theme/recipes/<이름>.ts`에 recipe를 쓰고 ② `recipes/index.ts`의 `recipes`에 등록하고 ③ `src/components/ui/<이름>.tsx`에서 `styled(ark.<el>, recipe)`로 만들고 ④ `ui/index.ts`에서 export한다. 마지막에 `bun run codegen`(Panda)을 돌린다.
 - 공통 부품이 여러 개인 컴포넌트(Field의 root/label/error 등)는 **부분별 `defineRecipe`**를 쓴다. Panda 2.4에서 `styled`는 slot recipe의 `.root`/`.label` 타입을 주지 않으므로 `defineSlotRecipe`는 쓰지 않는다.
 - 라벨이 있는 컨트롤은 라벨 텍스트만 접근성 이름이 되게 한다(예: `이름 *` 금지). 필수 표시는 `required`/`aria-required`로 넘긴다.

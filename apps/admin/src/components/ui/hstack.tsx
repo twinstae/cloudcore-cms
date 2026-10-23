@@ -1,7 +1,2 @@
-import { ark } from "@ark-ui/react/factory";
-import type { ComponentProps } from "react";
-import { styled } from "styled-system/jsx";
-import { row } from "styled-system/recipes";
-
-export type HStackProps = ComponentProps<typeof HStack>;
-export const HStack = styled(ark.div, row);
+// Panda 프리셋의 hstack 패턴을 그대로 쓴다. 새 recipe를 만들지 않는다.
+export { HStack, type HstackProps as HStackProps } from "styled-system/jsx";
