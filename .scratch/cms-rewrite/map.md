@@ -49,7 +49,7 @@ Label: wayfinder:map
 - 품질 도구: 타입체크는 **tsrs**(안 되는 부분만 `tsc` TS7로 대신), 린트는 **oxlint**, 포맷은 **oxfmt**. **lefthook pre-push**에서 lint, format check, typecheck, unit/component/API 테스트를 모두 통과해야 한다. e2e는 수동으로 실행한다.
 - 언어: 한국어만 지원한다. i18n은 하지 않는다.
 
-**확정된 제품 결정**: Status는 draft/scheduled/published이고 예약 발행은 Cron으로 처리한다. Author는 Post만 쓴다(Page는 Owner만). Tag는 Author도 붙이거나 만들 수 있고, 수정과 삭제는 Owner만 한다. Media는 누구나 업로드하고, 삭제는 업로더와 Owner가 한다. Author는 다른 사람의 Post를 볼 수 없다. Revision은 발행, 직접 저장, 일정 간격의 자동 저장 때만 만든다. Post 메타데이터는 slug, excerpt, 대표 이미지, SEO(meta title/description, OG 이미지), featured, 수정 가능한 발행일이고 작성자는 1명이다. Site URL은 Ghost와 같다(`/{slug}/`, `/tag/{slug}/`, `/page/N/`, `/rss/`, `/sitemap.xml`). Site는 정적 파일이라 캐시 설계가 필요 없고, 발행은 Site Build가 끝난 뒤 반영된다(ADR-0004, SSR + SWR 결정을 대체함). Invitation과 비밀번호 재설정은 Owner가 링크를 복사해서 전달한다(메일 발송 없음). 이 내용은 grilling 세션(2026-10-23)에서 정했고, 각 티켓에서 다시 논의하지 않는다.
+**확정된 제품 결정**: Status는 draft/scheduled/published이고 예약 발행은 Cron으로 처리한다. Author는 Post만 쓴다(Page는 Owner만). Tag는 Author도 붙이거나 만들 수 있고, 수정과 삭제는 Owner만 한다. Media는 누구나 업로드하고, 삭제는 업로더와 Owner가 한다. Author는 다른 사람의 Post를 볼 수 없다. Revision은 발행, 직접 저장, 일정 간격의 자동 저장 때만 만든다. Post 메타데이터는 slug, excerpt, 대표 이미지, SEO(meta title/description, OG 이미지), featured, 수정 가능한 발행일이고 작성자는 1명이다. Site URL은 Ghost와 같다(`/{slug}/`, `/tag/{slug}/`, `/page/N/`, `/rss/`, `/sitemap.xml`). Site는 정적 파일이라 캐시 설계가 필요 없고, 발행은 Site Build가 끝난 뒤 반영된다(ADR-0004, SSR + SWR 결정을 대체함). Invitation과 비밀번호 재설정은 Owner가 링크를 복사해서 전달한다(메일 발송 없음). 필진은 스스로 발행하며 운영자의 검토·승인 단계를 두지 않는다. 필진이 워드·Notion·Google Docs·Markdown에서 붙여넣은 글은 에디터가 아는 요소만 남기고 나머지 서식을 버려 사이트 스타일로 정규화한다. 자동 저장은 60초마다 브라우저에만 남기고 서버 저장은 명시적인 저장·발행으로만 한다. 삭제는 휴지통으로 보내고, 휴지통에서 영구 삭제하면 그 Content의 Revision과 Media를 함께 지운다(다른 Content가 쓰는 Media는 남긴다). slug는 발행 전에만 바꿀 수 있다. 붙여넣은 이미지는 브라우저 초안에 있다가 저장·발행할 때 업로드하고, Body는 표와 각주를 지원한다. 페르소나는 지어낸 인물이 아니라 실제 운영자(개발자 겸 디자이너)와 초대받은 필진(코딩을 모르는 대학원생·청소년·직장인·예술가·단체 상근자)이다. 이 내용은 grilling 세션(2026-10-23)에서 정했고, 각 티켓에서 다시 논의하지 않는다.
 
 ## Decisions so far
 
@@ -67,8 +67,11 @@ Label: wayfinder:map
 - [모노레포 구조](issues/10-grilling-monorepo-layout.md): grilling 대신 뼈대(21)로 답함. `apps/{api,admin,site}`, `packages/*`는 필요할 때. api Worker가 Admin assets를 SPA fallback으로 서빙하고 `/api/*`만 Worker로. `@cloudcore/api/client`로 `hc` 타입 공유. 루트 `bun run check` = lefthook pre-push
 - [Admin 컴포넌트 DI 패턴](issues/09-prototype-admin-component-di-pattern.md): 별도 prototype 대신 Tag 슬라이스(22)로 만든다
 - [비밀번호 해시 CPU 측정](issues/16-task-measure-password-hash-cpu.md): 인증 슬라이스(23)에서 PBKDF2로 구현하고 배포 후 실측해 맞춘다
+- [남은 영역의 구현 티켓 분해](issues/15-grilling-implementation-slicing.md): 기능 PRD 6종(`docs/prd/`)을 쓰고 UC를 기준으로 24–35를 만들었다. 완료 조건은 PRD QC 항목에서 가져온다
 
 ## Not yet specified
+
+2026-10-23 PRD 작성과 티켓 분해로 아래 항목은 대부분 각 티켓의 "열린 질문"으로 옮겼다(Media 참조 무결성 → 28, Cron 주기 → 26, 백업 범위 → 34, 인프라 순서 → 34). 아래에는 아직 어느 티켓도 맡지 않은 것만 남긴다.
 
 - **예약 발행 실행 세부**: Cron 주기, 실패하면 재시도할지, `scheduled`에서 `published`로 바뀔 때 Revision을 어떻게 처리할지. 기본 흐름(Cron에서 `UPDATE ... RETURNING` 후 Deploy Hook 1회 호출)은 17 조사에서 정해졌다.
 - **자동 저장과 Revision 간격**: N분을 몇으로 할지, 동시에 두 탭에서 편집할 때 충돌을 어떻게 처리할지.
