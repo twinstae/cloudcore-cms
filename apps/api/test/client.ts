@@ -45,13 +45,24 @@ export class ApiError extends Error {
   }
 }
 
-async function request(method: string, path: string, body?: unknown): Promise<unknown> {
+/** 로그인 세션을 넘길 때 쓴다: `client.post(path, body, { cookie })`. */
+export type RequestOptions = { cookie?: string };
+
+async function request(
+  method: string,
+  path: string,
+  body?: unknown,
+  options: RequestOptions = {},
+): Promise<unknown> {
+  const headers: Record<string, string> = {};
+  if (body !== undefined) headers["content-type"] = "application/json";
+  if (options.cookie) headers["cookie"] = options.cookie;
+
   const res = await exports.default.fetch(
     new Request(`https://admin.example.test${path}`, {
       method,
-      ...(body === undefined
-        ? {}
-        : { headers: { "content-type": "application/json" }, body: JSON.stringify(body) }),
+      headers,
+      ...(body === undefined ? {} : { body: JSON.stringify(body) }),
     }),
   );
   const data: unknown = res.headers.get("content-type")?.includes("json")
@@ -63,11 +74,27 @@ async function request(method: string, path: string, body?: unknown): Promise<un
 
 // API 테스트용 클라이언트. 2xx면 파싱한 body를, 아니면 ApiError(status, body)를 던진다.
 export const client = {
-  get: <P extends PathOf<"$get">>(path: P) => request("GET", path) as Promise<OutputOf<P, "$get">>,
-  post: <P extends PathOf<"$post">>(path: P, body: InputOf<P, "$post">) =>
-    request("POST", path, body) as Promise<OutputOf<P, "$post">>,
-  patch: <P extends PathOf<"$patch">>(path: P, params: ParamsOf<P>, body: InputOf<P, "$patch">) =>
-    request("PATCH", fillPath(path, params), body) as Promise<OutputOf<P, "$patch">>,
-  delete: <P extends PathOf<"$delete">>(path: P, params: ParamsOf<P>) =>
-    request("DELETE", fillPath(path, params)).then(() => undefined),
+  get: <P extends PathOf<"$get">>(path: P, options?: RequestOptions) =>
+    request("GET", path, undefined, options) as Promise<OutputOf<P, "$get">>,
+  post: <P extends PathOf<"$post">>(path: P, body: InputOf<P, "$post">, options?: RequestOptions) =>
+    request("POST", path, body, options) as Promise<OutputOf<P, "$post">>,
+  patch: <P extends PathOf<"$patch">>(
+    path: P,
+    params: ParamsOf<P>,
+    body: InputOf<P, "$patch">,
+    options?: RequestOptions,
+  ) => request("PATCH", fillPath(path, params), body, options) as Promise<OutputOf<P, "$patch">>,
+  delete: <P extends PathOf<"$delete">>(path: P, params: ParamsOf<P>, options?: RequestOptions) =>
+    request("DELETE", fillPath(path, params), undefined, options).then(() => undefined),
 };
+
+/** 로그인 세션으로 호출하는 클라이언트. 테스트마다 cookie를 넘기지 않게 한다. */
+export const withCookie = (cookie: string) => ({
+  get: <P extends PathOf<"$get">>(path: P) => client.get(path, { cookie }),
+  post: <P extends PathOf<"$post">>(path: P, body: InputOf<P, "$post">) =>
+    client.post(path, body, { cookie }),
+  patch: <P extends PathOf<"$patch">>(path: P, params: ParamsOf<P>, body: InputOf<P, "$patch">) =>
+    client.patch(path, params, body, { cookie }),
+  delete: <P extends PathOf<"$delete">>(path: P, params: ParamsOf<P>) =>
+    client.delete(path, params, { cookie }),
+});

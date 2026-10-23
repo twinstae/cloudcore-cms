@@ -3,6 +3,10 @@
   "name": "cloudcore-api",
   "main": "src/index.ts",
   "compatibility_date": "2026-10-20",
+  // Better Auth가 AsyncLocalStorage를 쓴다.
+  "compatibility_flags": ["nodejs_compat"],
+  // 비밀값(BETTER_AUTH_SECRET)은 배포 때 `wrangler secret put`으로 넣는다.
+  "vars": { "BETTER_AUTH_URL": "http://localhost:8787" },
   // Admin SPA 정적 자산을 같은 Worker가 서빙한다. /api/* 만 Worker 코드로 들어온다.
   "assets": {
     "directory": "../admin/dist",

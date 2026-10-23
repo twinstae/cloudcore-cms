@@ -2,6 +2,7 @@ import { CreateTagInput, encodeTag, TagId, TagWire, UpdateTagInput } from "@clou
 import { type Context, Hono } from "hono";
 import { describeRoute, resolver } from "hono-openapi";
 import * as v from "valibot";
+import { requireOwner, requireUser } from "../auth/middleware";
 import type { AppEnv } from "../types";
 import { validate } from "../validation";
 import { createTagStore, type TagStoreError } from "./store";
@@ -40,9 +41,11 @@ export const tagRoutes = new Hono<AppEnv>()
       responses: {
         201: { description: "생성됨", content: json(TagWire) },
         400: { description: "입력이 올바르지 않음" },
+        401: { description: "로그인 필요" },
         409: { description: "slug가 이미 있음" },
       },
     }),
+    requireUser,
     validate("json", CreateTagInput),
     async (c) => {
       const result = await createTagStore(c.var.db).create(c.req.valid("json"));
@@ -57,10 +60,14 @@ export const tagRoutes = new Hono<AppEnv>()
       responses: {
         200: { description: "수정됨", content: json(TagWire) },
         400: { description: "입력이 올바르지 않음" },
+        401: { description: "로그인 필요" },
+        403: { description: "Owner만 가능" },
         404: { description: "Tag가 없음" },
         409: { description: "slug가 이미 있음" },
       },
     }),
+    requireUser,
+    requireOwner,
     validate("param", tagParam),
     validate("json", UpdateTagInput),
     async (c) => {
@@ -79,9 +86,13 @@ export const tagRoutes = new Hono<AppEnv>()
       responses: {
         204: { description: "삭제됨" },
         400: { description: "id가 ULID가 아님" },
+        401: { description: "로그인 필요" },
+        403: { description: "Owner만 가능" },
         404: { description: "Tag가 없음" },
       },
     }),
+    requireUser,
+    requireOwner,
     validate("param", tagParam),
     async (c) => {
       const result = await createTagStore(c.var.db).remove(c.req.valid("param").id);
