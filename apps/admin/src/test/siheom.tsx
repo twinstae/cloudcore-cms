@@ -33,3 +33,5 @@ const overridden = overrideSiheom(
 
 export const { runSiheom, given, actions, query, effect } = overridden;
 export const assertions = overridden.assertions;
+
+export { withFakeTimers } from "@siheom/react";

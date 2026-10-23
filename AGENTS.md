@@ -304,3 +304,7 @@ Default vocabulary: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-
 ### Domain docs
 
 Single-context: one `GLOSSARY.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.
+
+### Siheom frontend tests
+
+Admin UI는 siheom 테스트로 검증한다(브라우저 조작·스크린샷 대신). See `.claude/skills/siheom-frontend-test/SKILL.md`.

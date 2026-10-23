@@ -36,7 +36,8 @@ npm-debug.log*
 
 # Claude Code project files
 CLAUDE.md
-.claude/
+.claude/*
+!.claude/skills/
 tasks/
 
 # Monorepo generated files
