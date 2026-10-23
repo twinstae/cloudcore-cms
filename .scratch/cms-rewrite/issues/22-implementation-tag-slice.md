@@ -2,7 +2,7 @@
 
 Label: wayfinder:implementation
 Type: implementation
-Status: open
+Status: claimed
 Blocked by: 21
 
 ## 작업

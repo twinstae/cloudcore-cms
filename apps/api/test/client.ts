@@ -8,11 +8,18 @@ type PathOf<M extends Method> = {
   [P in keyof Schema]: M extends keyof Schema[P] ? P : never;
 }[keyof Schema] &
   string;
-type OutputOf<P extends keyof Schema, M extends Method> = Schema[P][M & keyof Schema[P]] extends {
-  output: infer O;
-}
-  ? O
-  : never;
+type Endpoint<P extends keyof Schema, M extends Method> = Schema[P][M & keyof Schema[P]];
+// 성공(2xx) 응답의 body 타입만 고른다. 실패는 ApiError로 던지므로 타입에 넣지 않는다.
+type OutputOf<P extends keyof Schema, M extends Method> =
+  Endpoint<P, M> extends infer E
+    ? E extends { output: infer O; status: infer S }
+      ? S extends 200 | 201 | 204
+        ? O
+        : never
+      : never
+    : never;
+type InputOf<P extends keyof Schema, M extends Method> =
+  Endpoint<P, M> extends { input: { json: infer J } } ? J : never;
 
 export class ApiError extends Error {
   constructor(
@@ -42,4 +49,6 @@ async function request(method: string, path: string, body?: unknown): Promise<un
 // API 테스트용 클라이언트. 2xx면 파싱한 body를, 아니면 ApiError(status, body)를 던진다.
 export const client = {
   get: <P extends PathOf<"$get">>(path: P) => request("GET", path) as Promise<OutputOf<P, "$get">>,
+  post: <P extends PathOf<"$post">>(path: P, body: InputOf<P, "$post">) =>
+    request("POST", path, body) as Promise<OutputOf<P, "$post">>,
 };

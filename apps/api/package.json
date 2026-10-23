@@ -10,13 +10,27 @@
     "dev": "wrangler dev --port 8787",
     "build": "bun run --filter @cloudcore/admin build",
     "deploy": "wrangler deploy",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate:local": "wrangler d1 migrations apply DB --local"
   },
   "dependencies": {
-    "hono": "4.13.13"
+    "@cloudcore/schema": "workspace:*",
+    "@hono/standard-validator": "0.4.0",
+    "@valibot/to-json-schema": "1.8.0",
+    "better-result": "3.0.1",
+    "drizzle-orm": "0.45.4",
+    "hono": "4.13.13",
+    "hono-openapi": "1.5.0",
+    "temporal-polyfill": "1.0.6",
+    "ulid": "3.0.2",
+    "valibot": "1.5.0"
   },
   "devDependencies": {
     "@cloudflare/vitest-plugin": "1.4.7",
+    "@standard-schema/spec": "1.1.0",
+    "@types/node": "24",
+    "drizzle-kit": "0.31.11",
     "vitest": "4.1.12",
     "wrangler": "4.152.0"
   }

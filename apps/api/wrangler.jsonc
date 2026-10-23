@@ -10,5 +10,14 @@
     "not_found_handling": "single-page-application",
     "run_worker_first": ["/api/*"],
   },
+  // database_id는 인프라 프로비저닝 때 실제 값으로 바꾼다. 로컬(miniflare)은 아무 값이나 된다.
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "cloudcore",
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations",
+    },
+  ],
   "observability": { "enabled": true },
 }
