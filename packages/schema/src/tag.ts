@@ -16,7 +16,10 @@ export const TagName = v.pipe(
 );
 export type TagName = v.InferOutput<typeof TagName>;
 
-export const TagDescription = v.pipe(v.string(), v.maxLength(500));
+export const TagDescription = v.pipe(
+  v.string(),
+  v.maxLength(500, "설명은 500자까지 쓸 수 있습니다"),
+);
 
 /**
  * 외부 세계(HTTP JSON, DB row)의 모양. 시각은 밀리초 3자리 ISO 문자열이고

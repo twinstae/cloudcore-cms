@@ -13,6 +13,11 @@ export const semanticTokens = defineSemanticTokens({
       muted: { value: { base: "{colors.neutral.600}", _dark: "{colors.neutral.400}" } },
     },
     border: { value: { base: "{colors.neutral.200}", _dark: "{colors.neutral.800}" } },
+    accent: {
+      bg: { value: { base: "{colors.blue.600}", _dark: "{colors.blue.500}" } },
+      hover: { value: { base: "{colors.blue.700}", _dark: "{colors.blue.400}" } },
+      fg: { value: { base: "{colors.white}", _dark: "{colors.neutral.950}" } },
+    },
     neutral: { subtle: subtle("neutral") },
     success: { subtle: subtle("green") },
     danger: { subtle: subtle("red") },
