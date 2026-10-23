@@ -22,12 +22,12 @@ const dev = tag("01ARZ3NDEKTSV4RRFFQ69G5FAW", "개발", "dev");
 it("Tag를 이름, slug, 설명과 함께 보여준다", async () => {
   await runSiheom(
     given.render(<TagList tags={[retro, dev]} onEdit={() => {}} onDelete={() => {}} />),
-    assertions.visible(query.region("Tag 목록"), true),
+    assertions.visible(query.region("Tag 목록")),
     assertions.textContent(query.heading("회고"), "회고"),
     assertions.textContent(query.status("회고 slug"), "retro"),
     assertions.textContent(query.heading("개발"), "개발"),
-    assertions.visible(query.button("회고 수정"), true),
-    assertions.visible(query.button("개발 삭제"), true),
+    assertions.visible(query.button("회고 수정")),
+    assertions.visible(query.button("개발 삭제")),
   );
 });
 

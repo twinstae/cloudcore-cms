@@ -15,7 +15,8 @@
     "format:check": "oxfmt --check",
     "typecheck": "tsrs -b --runExternalCode",
     "test": "bun run --filter '*' --if-present test:run",
-    "check": "bun run codegen && bun run lint && bun run format:check && bun run typecheck && bun run test"
+    "check:workspace-deps": "bun scripts/check-declared-deps.ts",
+    "check": "bun run codegen && bun run lint && bun run format:check && bun run check:workspace-deps && bun run typecheck && bun run test"
   },
   "devDependencies": {
     "lefthook": "2.2.2",

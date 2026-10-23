@@ -11,14 +11,22 @@
 ## 스타일 (Panda)
 
 - 기능 컴포넌트에서 `css()`/style props를 하드코딩하지 않는다. `src/components/ui`의 디자인 시스템 컴포넌트를 합성한다.
-- ui 컴포넌트는 `styled(ark.<el>, recipe)` 한 줄이다. 모양은 `src/theme/recipes/*`의 recipe(`defineRecipe`, 여러 부분이면 `defineSlotRecipe` → `slotRecipes`)에, 색은 `src/theme/semantic-tokens.ts`의 semantic token(라이트/다크)에 둔다.
+- ui 컴포넌트는 `styled(ark.<el>, recipe)` 한 줄이다. 모양은 `src/theme/recipes/*`의 recipe에, 색은 `src/theme/semantic-tokens.ts`의 semantic token(라이트/다크)에 둔다.
 - 필요한 recipe가 없으면 기능 컴포넌트에 스타일을 쓰지 말고 recipe/variant를 추가한다.
+- **ui 컴포넌트 추가 순서**: ① `src/theme/recipes/<이름>.ts`에 recipe를 쓰고 ② `recipes/index.ts`의 `recipes`에 등록하고 ③ `src/components/ui/<이름>.tsx`에서 `styled(ark.<el>, recipe)`로 만들고 ④ `ui/index.ts`에서 export한다. 마지막에 `bun run codegen`(Panda)을 돌린다.
+- 공통 부품이 여러 개인 컴포넌트(Field의 root/label/error 등)는 **부분별 `defineRecipe`**를 쓴다. Panda 2.4에서 `styled`는 slot recipe의 `.root`/`.label` 타입을 주지 않으므로 `defineSlotRecipe`는 쓰지 않는다.
+- 라벨이 있는 컨트롤은 라벨 텍스트만 접근성 이름이 되게 한다(예: `이름 *` 금지). 필수 표시는 `required`/`aria-required`로 넘긴다.
 
 ## 컴포넌트 테스트
 
 - `@siheom/react`를 직접 import하지 않는다. `src/test/siheom.tsx`의 `runSiheom`/`given`/`actions`/`assertions`/`query`를 쓴다. 이 모듈이 `overrideSiheom`으로 `render`를 `TestProvider`(QueryClient 등)로 감싼다. 테스트마다 Provider를 다시 감싸지 않는다.
 - 데이터는 props로 넣는다. 컴포넌트가 데이터를 받으므로 네트워크 fake가 필요 없는 것이 기본이다.
 - `vi.mock`/`vi.fn`/`vi.spyOn` 금지(oxlint). 의존성은 주입하고 fake를 넘긴다.
+- `assertions.visible(target)`은 **보여야 함**이 기본이다(래퍼가 siheom 기본값을 뒤집었다). 숨김을 확인할 때만 `false`를 넘긴다.
+
+## 의존성
+
+- 앱에서 다른 workspace 패키지(`@cloudcore/schema` 등)를 import하면 그 앱의 `package.json` dependencies에 `workspace:*`로 반드시 넣는다. 빠지면 TS는 통과하고 Vite dep scan이 실패해 `Vitest failed to find the current suite`나 `react-dom/client does not provide createRoot` 같은 무관한 오류가 난다. `bun run check:workspace-deps`가 잡는다.
 
 ## 경계와 Result
 

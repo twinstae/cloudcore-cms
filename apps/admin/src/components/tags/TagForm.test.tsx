@@ -7,8 +7,8 @@ it("이름과 slug가 비면 검증 메시지를 보여준다", async () => {
   await runSiheom(
     given.render(<TagForm submitLabel="추가" onSubmit={async () => {}} />),
     actions.click(query.button("추가")),
-    assertions.visible(query.alert("이름을 입력하세요"), true),
-    assertions.visible(query.alert("slug를 입력하세요"), true),
+    assertions.visible(query.alert("이름을 입력하세요")),
+    assertions.visible(query.alert("slug를 입력하세요")),
   );
 });
 
