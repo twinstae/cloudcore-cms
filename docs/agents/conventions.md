@@ -5,8 +5,7 @@
 ## Admin 컴포넌트
 
 - **기능 컴포넌트는 데이터를 props로 받는다.** `useQuery`를 직접 부르지 않고, `queryOptions`를 props로 받지도 않는다. 예: `HealthStatus({ connected })`.
-- **라우트가 데이터를 가져와 합성한다.** `loader`에서 `queryClient.ensureQueryData(xxxQueryOption)`, 컴포넌트에서 `useSuspenseQuery(xxxQueryOption)`로 꺼내 props로 넘긴다. 실패는 `errorComponent`.
-- **화면은 props로 받는다.** 화면 상태가 URL에서 오면(예: `?edit=<id>`) 그 값을 prop(`editingId`)으로, 변경 요청은 콜백(`onEditingChange`)으로 노출한다. `TagsScreen`처럼 라우트와 분리해야 라우터 없이 상호작용을 테스트할 수 있다.
+- **라우트는 조회와 배선만, 화면은 props로 받는다.** `loader`에서 `ensureQueryData(xxxQueryOption)`, 라우트에서 `useSuspenseQuery` 후 화면 컴포넌트에 넘긴다(실패는 `errorComponent`). URL이 화면 상태를 정하면 그 값을 prop(`editingId`)으로, 변경 요청은 콜백으로 노출한다(`TagsScreen`). 라우터 없이 상호작용을 테스트하기 위해서다.
 - query options는 `src/queries/<자원>.ts`에 두고 이름은 `<자원>QueryOption`이다. API 클라이언트(`src/lib/api.ts`)를 아는 곳은 여기뿐이다.
 
 ## 스타일 (Panda)
@@ -22,11 +21,9 @@
 
 ## 컴포넌트 테스트
 
-- **UI 검증은 siheom 테스트로 한다.** 브라우저를 직접 조작하거나 스크린샷을 찍어 확인하지 않는다(사용자가 명시적으로 요청할 때만). 사용법은 `.claude/skills/siheom-frontend-test/SKILL.md`.
-- `@siheom/react`를 직접 import하지 않는다. `src/test/siheom.tsx`의 `runSiheom`/`given`/`actions`/`assertions`/`query`/`withFakeTimers`를 쓴다. 이 모듈이 `overrideSiheom`으로 `render`를 `TestProvider`(QueryClient 등)로 감싼다. 테스트마다 Provider를 다시 감싸지 않는다.
-- 데이터는 props로 넣는다. 컴포넌트가 데이터를 받으므로 네트워크 fake가 필요 없는 것이 기본이다.
-- `vi.mock`/`vi.fn`/`vi.spyOn` 금지(oxlint). 의존성은 주입하고 fake를 넘긴다.
-- `assertions.visible(target)`은 **보여야 함**이 기본이다(래퍼가 siheom 기본값을 뒤집었다). 숨김을 확인할 때만 `false`를 넘긴다.
+- **UI 검증은 siheom 테스트로 한다.** 브라우저 조작·스크린샷은 사용자가 요청할 때만. 사용법은 `.claude/skills/siheom-frontend-test/SKILL.md`.
+- `src/test/siheom.tsx`만 쓴다(`@siheom/react` 직접 import 금지). 래퍼가 `TestProvider`를 감싸고 `assertions.visible` 기본값을 "보임"으로 뒤집었다. 숨김은 `false`.
+- `vi.mock`/`vi.fn`/`vi.spyOn` 금지(oxlint). 의존성은 props로 주입하고 fake를 넘긴다.
 
 ## 의존성
 
