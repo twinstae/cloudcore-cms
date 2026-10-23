@@ -1,0 +1,16 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "astro": true,
+  "ignorePatterns": [
+    "legacy/**",
+    "prototypes/**",
+    "**/styled-system/**",
+    "**/routeTree.gen.ts",
+    "**/.astro/**",
+    "**/dist/**",
+    "bun.lock",
+    ".scratch/**",
+    "**/worker-configuration.d.ts",
+    "**/*.md"
+  ]
+}

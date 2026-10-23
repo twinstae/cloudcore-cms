@@ -1,36 +1,26 @@
 {
-  "name": "cloudcore-cms",
-  "version": "0.1.0",
+  "name": "cloudcore",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "type": "module",
   "scripts": {
-    "dev": "wrangler dev",
-    "dev:local": "wrangler dev --local --persist-to=.wrangler/state",
-    "build": "wrangler deploy --dry-run --outdir=dist",
-    "deploy": "wrangler deploy",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "wrangler d1 migrations apply cloudcore-cms --local",
-    "db:migrate:prod": "wrangler d1 migrations apply cloudcore-cms --remote",
-    "db:studio": "drizzle-kit studio",
-    "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "test:watch": "vitest"
-  },
-  "dependencies": {
-    "@hono/zod-validator": "^0.9.1",
-    "drizzle-orm": "^0.45.4",
-    "hono": "^4.13.13",
-    "zod": "^4.6.7"
+    "prepare": "lefthook install",
+    "codegen": "bun run --filter '*' --if-present codegen",
+    "dev": "bun run --filter '*' --parallel --if-present dev",
+    "lint": "oxlint",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "typecheck": "tsrs -b --runExternalCode",
+    "test": "bun run --filter '*' --if-present test:run",
+    "check": "bun run codegen && bun run lint && bun run format:check && bun run typecheck && bun run test"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^5.20261023.1",
-    "drizzle-kit": "^0.31.11",
-    "typescript": "^7.0.2",
-    "vitest": "^5.0.5",
-    "wrangler": "^4.152.0"
-  },
-  "overrides": {
-    "@esbuild-kit/core-utils": {
-      "esbuild": "^0.28.2"
-    }
+    "lefthook": "2.2.2",
+    "oxfmt": "0.74.0",
+    "oxlint": "1.89.0",
+    "tsrs": "0.18.0-ts7.1.0-dev.20260929"
   }
 }

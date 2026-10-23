@@ -1,0 +1,19 @@
+{
+  "name": "@cloudcore/site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "codegen": "astro sync",
+    "dev": "astro dev --port 4321",
+    "build": "astro build",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "astro": "7.4.2"
+  },
+  "devDependencies": {
+    "@astrojs/compiler-rs": "0.5.2",
+    "@astrojs/ts-content-mapper": "0.2.0",
+    "wrangler": "4.152.0"
+  }
+}

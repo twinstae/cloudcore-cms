@@ -1,0 +1,23 @@
+{
+  "name": "@cloudcore/api",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./client": "./src/client.ts"
+  },
+  "scripts": {
+    "codegen": "wrangler types",
+    "dev": "wrangler dev --port 8787",
+    "build": "bun run --filter @cloudcore/admin build",
+    "deploy": "wrangler deploy",
+    "test:run": "vitest run"
+  },
+  "dependencies": {
+    "hono": "4.13.13"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-plugin": "1.4.7",
+    "vitest": "4.1.12",
+    "wrangler": "4.152.0"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "lib": ["es2023", "dom", "dom.iterable"],
+    "types": ["vite/client", "@vitest/browser-playwright"],
+    "paths": {
+      "styled-system/*": ["./styled-system/*"]
+    }
+  },
+  "include": ["src", "styled-system", "vite.config.ts", "panda.config.ts"],
+  "references": [
+    {
+      "path": "../api"
+    }
+  ]
+}

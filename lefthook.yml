@@ -1,0 +1,17 @@
+pre-push:
+  piped: true
+  jobs:
+    - name: codegen
+      run: bun run codegen
+    - name: checks
+      group:
+        parallel: true
+        jobs:
+          - name: lint
+            run: bun run lint
+          - name: format
+            run: bun run format:check
+          - name: typecheck
+            run: bun run typecheck
+          - name: test
+            run: bun run test

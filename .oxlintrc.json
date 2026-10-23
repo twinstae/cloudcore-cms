@@ -1,0 +1,42 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "oxc", "react", "jsx-a11y", "import", "vitest"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn"
+  },
+  "ignorePatterns": [
+    "legacy/**",
+    "prototypes/**",
+    "**/styled-system/**",
+    "**/routeTree.gen.ts",
+    "**/.astro/**",
+    "**/dist/**",
+    "**/node_modules/**",
+    "**/worker-configuration.d.ts"
+  ],
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "import/no-cycle": "error",
+    "vitest/no-restricted-vi-methods": [
+      "error",
+      {
+        "mock": "vi.mock 대신 fake를 주입한다",
+        "spyOn": "vi.spyOn 대신 fake를 주입한다",
+        "fn": "vi.fn 대신 fake를 주입한다"
+      }
+    ],
+    "vitest/expect-expect": [
+      "error",
+      {
+        "assertFunctionNames": ["expect", "runSiheom"]
+      }
+    ],
+    "import/no-unassigned-import": [
+      "warn",
+      {
+        "allow": ["**/*.css"]
+      }
+    ]
+  }
+}

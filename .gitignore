@@ -38,3 +38,11 @@ npm-debug.log*
 CLAUDE.md
 .claude/
 tasks/
+
+# Monorepo generated files
+styled-system/
+apps/*/worker-configuration.d.ts
+.tsbuild/
+__screenshots__/
+.vitest-attachments/
+prototypes/

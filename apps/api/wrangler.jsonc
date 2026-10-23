@@ -1,0 +1,14 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "cloudcore-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-20",
+  // Admin SPA 정적 자산을 같은 Worker가 서빙한다. /api/* 만 Worker 코드로 들어온다.
+  "assets": {
+    "directory": "../admin/dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"],
+  },
+  "observability": { "enabled": true },
+}
