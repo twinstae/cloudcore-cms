@@ -21,6 +21,21 @@ type OutputOf<P extends keyof Schema, M extends Method> =
 type InputOf<P extends keyof Schema, M extends Method> =
   Endpoint<P, M> extends { input: { json: infer J } } ? J : never;
 
+// "/api/tags/:id" → { id: string }
+type ParamNames<P extends string> = P extends `${string}:${infer Name}/${infer Rest}`
+  ? Name | ParamNames<`/${Rest}`>
+  : P extends `${string}:${infer Name}`
+    ? Name
+    : never;
+type ParamsOf<P extends string> = { [K in ParamNames<P>]: string };
+
+const fillPath = <P extends string>(template: P, params: ParamsOf<P>): string =>
+  template.replace(/:([^/]+)/g, (_, name: string) => {
+    const value = (params as Record<string, string>)[name];
+    if (value === undefined) throw new Error(`경로 파라미터가 없습니다: ${name}`);
+    return encodeURIComponent(value);
+  });
+
 export class ApiError extends Error {
   constructor(
     readonly status: number,
@@ -51,4 +66,8 @@ export const client = {
   get: <P extends PathOf<"$get">>(path: P) => request("GET", path) as Promise<OutputOf<P, "$get">>,
   post: <P extends PathOf<"$post">>(path: P, body: InputOf<P, "$post">) =>
     request("POST", path, body) as Promise<OutputOf<P, "$post">>,
+  patch: <P extends PathOf<"$patch">>(path: P, params: ParamsOf<P>, body: InputOf<P, "$patch">) =>
+    request("PATCH", fillPath(path, params), body) as Promise<OutputOf<P, "$patch">>,
+  delete: <P extends PathOf<"$delete">>(path: P, params: ParamsOf<P>) =>
+    request("DELETE", fillPath(path, params)).then(() => undefined),
 };

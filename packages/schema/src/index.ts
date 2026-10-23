@@ -12,4 +12,5 @@ export {
   TagName,
   TagWire,
   type TagWireInput,
+  UpdateTagInput,
 } from "./tag";

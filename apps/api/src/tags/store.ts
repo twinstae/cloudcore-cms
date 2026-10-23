@@ -4,20 +4,27 @@ import {
   encodeTag,
   type Tag,
   TagDecodeError,
+  TagId,
   type TagWireInput,
   toIsoMillis,
+  type UpdateTagInput,
 } from "@cloudcore/schema";
 import { Result, TaggedError } from "better-result";
-import { asc } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import { Temporal } from "temporal-polyfill";
 import { ulid } from "ulid";
 import { type Db, isUniqueViolation } from "../db";
 import { tags } from "../db/schema";
 
 /** slug가 이미 쓰이고 있다. 예상된 실패라 예외가 아니라 Result로 돌려준다. */
-export class SlugTaken extends TaggedError("SlugTaken")<{ slug: string; message: string }> {}
+export class SlugTaken extends TaggedError("SlugTaken")<{
+  slug: string | null;
+  message: string;
+}> {}
 
-export type TagStoreError = SlugTaken | TagDecodeError;
+export class TagNotFound extends TaggedError("TagNotFound")<{ id: TagId; message: string }> {}
+
+export type TagStoreError = SlugTaken | TagNotFound | TagDecodeError;
 
 export function createTagStore(db: Db) {
   return {
@@ -50,6 +57,38 @@ export function createTagStore(db: Db) {
         }
         throw error;
       }
+    },
+
+    async update(id: TagId, input: UpdateTagInput): Promise<Result<Tag, TagStoreError>> {
+      const updatedAt = toIsoMillis(Temporal.Now.instant());
+
+      try {
+        // row를 그대로 돌려받아 decode한다. UPDATE도 경계라서 우회하지 않는다.
+        const [row] = await db
+          .update(tags)
+          .set({ ...input, updatedAt })
+          .where(eq(tags.id, id))
+          .returning();
+
+        if (row === undefined)
+          return Result.err(new TagNotFound({ id, message: "Tag가 없습니다" }));
+        return decodeTag(row);
+      } catch (error) {
+        if (isUniqueViolation(error)) {
+          return Result.err(
+            new SlugTaken({ slug: input.slug ?? null, message: "이미 쓰는 slug입니다" }),
+          );
+        }
+        throw error;
+      }
+    },
+
+    async remove(id: TagId): Promise<Result<void, TagNotFound>> {
+      const deleted = await db.delete(tags).where(eq(tags.id, id)).returning({ id: tags.id });
+
+      if (deleted.length === 0)
+        return Result.err(new TagNotFound({ id, message: "Tag가 없습니다" }));
+      return Result.ok(undefined);
     },
   };
 }

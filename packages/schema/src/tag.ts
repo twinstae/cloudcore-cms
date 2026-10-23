@@ -95,3 +95,13 @@ export const CreateTagInput = v.object({
   description: v.optional(TagDescription, ""),
 });
 export type CreateTagInput = v.InferOutput<typeof CreateTagInput>;
+
+export const UpdateTagInput = v.pipe(
+  v.object({
+    name: v.optional(TagName),
+    slug: v.optional(Slug),
+    description: v.optional(TagDescription),
+  }),
+  v.check((input) => Object.keys(input).length > 0, "바꿀 값을 하나는 보내야 합니다"),
+);
+export type UpdateTagInput = v.InferOutput<typeof UpdateTagInput>;
