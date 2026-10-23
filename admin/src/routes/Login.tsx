@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router';
 import { useAuth } from '../lib/auth';
 import { passkeys, oauth, magicLinks } from '../lib/api';
 import { base64UrlToBuffer, bufferToBase64Url, isWebAuthnSupported } from '../lib/webauthn';
-import { Fingerprint, Github, Mail, Loader2 } from 'lucide-react';
+import { Fingerprint, Mail, Loader2 } from 'lucide-react';
+import GithubIcon from '../components/GithubIcon';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -252,7 +253,7 @@ export default function Login() {
                   {oauthLoading === 'github' ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
                   ) : (
-                    <Github className="w-5 h-5" />
+                    <GithubIcon className="w-5 h-5" />
                   )}
                   GitHub
                 </button>

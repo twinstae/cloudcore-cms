@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
+import { useParams, useSearchParams, useNavigate } from 'react-router';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { content, blocks, categories, tags, ContentBlock } from '../lib/api';
 import { useAuth } from '../lib/auth';
@@ -180,7 +180,7 @@ export default function ContentEdit() {
         </div>
         <div className="card">
           <div className="flex items-start gap-3 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-            <AlertTriangle className="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" />
+            <AlertTriangle className="w-5 h-5 text-yellow-600 mt-0.5 shrink-0" />
             <div>
               <h3 className="font-medium text-yellow-800">Read-only access</h3>
               <p className="text-sm text-yellow-700 mt-1">
@@ -199,7 +199,7 @@ export default function ContentEdit() {
             </div>
             <div>
               <label className="label">Status</label>
-              <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-700 mt-1">
+              <span className="inline-flex items-center px-2 py-1 rounded-sm text-xs font-medium bg-green-100 text-green-700 mt-1">
                 Published
               </span>
             </div>
@@ -365,7 +365,7 @@ export default function ContentEdit() {
                           );
                         }
                       }}
-                      className="rounded border-gray-300 text-primary focus:ring-primary"
+                      className="rounded-sm border-gray-300 text-primary focus:ring-primary"
                     />
                     <span className="ml-2 text-sm text-gray-700">{cat.name}</span>
                   </label>
@@ -394,7 +394,7 @@ export default function ContentEdit() {
                           setSelectedTags(selectedTags.filter((id) => id !== tag.id));
                         }
                       }}
-                      className="rounded border-gray-300 text-primary focus:ring-primary"
+                      className="rounded-sm border-gray-300 text-primary focus:ring-primary"
                     />
                     <span className="ml-2 text-sm text-gray-700">{tag.name}</span>
                   </label>
@@ -449,7 +449,7 @@ export default function ContentEdit() {
                             restoreRevisionMutation.mutate(rev.id);
                           }
                         }}
-                        className="text-xs text-primary hover:underline ml-2 flex-shrink-0"
+                        className="text-xs text-primary hover:underline ml-2 shrink-0"
                       >
                         Restore
                       </button>

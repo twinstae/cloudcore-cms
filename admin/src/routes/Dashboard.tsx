@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { content, media } from '../lib/api';
 import { FileText, Newspaper, Image, Plus } from 'lucide-react';
 
@@ -102,7 +102,7 @@ export default function Dashboard() {
                 <li key={page.id}>
                   <Link
                     to={`/content/${page.id}`}
-                    className="flex items-center justify-between py-2 hover:bg-gray-50 -mx-2 px-2 rounded"
+                    className="flex items-center justify-between py-2 hover:bg-gray-50 -mx-2 px-2 rounded-sm"
                   >
                     <span className="text-sm font-medium text-gray-900 truncate">
                       {page.title}
@@ -139,7 +139,7 @@ export default function Dashboard() {
                 <li key={post.id}>
                   <Link
                     to={`/content/${post.id}`}
-                    className="flex items-center justify-between py-2 hover:bg-gray-50 -mx-2 px-2 rounded"
+                    className="flex items-center justify-between py-2 hover:bg-gray-50 -mx-2 px-2 rounded-sm"
                   >
                     <span className="text-sm font-medium text-gray-900 truncate">
                       {post.title}

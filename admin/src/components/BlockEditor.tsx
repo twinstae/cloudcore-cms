@@ -195,7 +195,7 @@ function BlockInput({ block, config, onChange }: BlockInputProps) {
                       options: { ...block.options, [key]: e.target.checked },
                     })
                   }
-                  className="rounded border-gray-300"
+                  className="rounded-sm border-gray-300"
                 />
                 <span className="ml-2 text-sm text-gray-700">
                   {opt.label || key}
@@ -290,7 +290,7 @@ function BlockInput({ block, config, onChange }: BlockInputProps) {
                 <img
                   src={`/api/v1/media/${block.mediaId}/file`}
                   alt=""
-                  className="max-h-48 mx-auto rounded"
+                  className="max-h-48 mx-auto rounded-sm"
                 />
                 <button
                   onClick={() => onChange({ mediaId: undefined })}

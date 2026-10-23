@@ -8,7 +8,7 @@ export const blockSchema = z.object({
   id: z.string().max(100).optional(),
   type: z.string().min(1).max(100),
   value: z.string().max(100_000).default(''), // ~100KB per block value
-  options: z.record(z.unknown()).optional().refine(
+  options: z.record(z.string(), z.unknown()).optional().refine(
     (val) => {
       if (!val) return true;
       // SECURITY: Limit number of keys and serialized size to prevent DoS

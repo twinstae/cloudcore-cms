@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router';
 import { settings } from '../lib/api';
 import { useAuth } from '../lib/auth';
 import { Save, Check, Shield } from 'lucide-react';
@@ -162,14 +162,14 @@ export default function Settings() {
           <div className="space-y-3 text-sm">
             <div>
               <span className="text-gray-500">API Base URL:</span>
-              <code className="ml-2 px-2 py-1 bg-gray-100 rounded text-gray-900">
+              <code className="ml-2 px-2 py-1 bg-gray-100 rounded-sm text-gray-900">
                 {window.location.origin}/api/v1
               </code>
             </div>
             <div>
               <span className="text-gray-500">Documentation:</span>
               <span className="ml-2 text-gray-900">
-                See <code className="px-1 bg-gray-100 rounded">AGENTS.md</code> for API reference
+                See <code className="px-1 bg-gray-100 rounded-sm">AGENTS.md</code> for API reference
               </span>
             </div>
           </div>
@@ -269,7 +269,7 @@ function AuthSettingsSection() {
                     }}
                     className="sr-only peer"
                   />
-                  <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary peer-disabled:opacity-50 peer-disabled:cursor-not-allowed"></div>
+                  <div className="w-9 h-5 bg-gray-200 peer-focus:outline-hidden peer-focus:ring-2 peer-focus:ring-primary/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary peer-disabled:opacity-50 peer-disabled:cursor-not-allowed"></div>
                 </label>
               </div>
             );

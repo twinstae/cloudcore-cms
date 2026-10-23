@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { profile, passkeys, oauth, OAuthConnection, PasskeyCredential } from '../lib/api';
 import { useAuth } from '../lib/auth';
@@ -16,8 +16,8 @@ import {
   Fingerprint,
   Loader2,
   Pencil,
-  Github,
 } from 'lucide-react';
+import GithubIcon from '../components/GithubIcon';
 
 export default function Profile() {
   const queryClient = useQueryClient();
@@ -517,7 +517,7 @@ export default function Profile() {
                       <div key={conn.id} className="flex items-center justify-between py-3">
                         <div className="flex items-center gap-3">
                           {conn.provider === 'github' ? (
-                            <Github className="w-5 h-5 text-gray-700" />
+                            <GithubIcon className="w-5 h-5 text-gray-700" />
                           ) : (
                             <span className="text-sm font-medium text-gray-700 capitalize">{conn.provider}</span>
                           )}
@@ -555,7 +555,7 @@ export default function Profile() {
                       {linkingProvider === 'github' ? (
                         <Loader2 className="w-4 h-4 animate-spin" />
                       ) : (
-                        <Github className="w-4 h-4" />
+                        <GithubIcon className="w-4 h-4" />
                       )}
                       Link GitHub
                     </button>

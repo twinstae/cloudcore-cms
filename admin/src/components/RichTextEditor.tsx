@@ -49,7 +49,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
     },
     editorProps: {
       attributes: {
-        class: 'prose prose-sm max-w-none focus:outline-none min-h-[200px] px-4 py-3',
+        class: 'prose prose-sm max-w-none focus:outline-hidden min-h-[200px] px-4 py-3',
       },
     },
   });
@@ -230,7 +230,7 @@ function ToolbarButton({
       disabled={disabled}
       title={title}
       className={clsx(
-        'p-1.5 rounded transition-colors',
+        'p-1.5 rounded-sm transition-colors',
         active
           ? 'bg-gray-200 text-gray-900'
           : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900',

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router';
 import { users, User, audit, AuditLogEntry } from '../lib/api';
 import { useAuth } from '../lib/auth';
 import { Plus, Pencil, Trash2, X, Shield, ShieldCheck, UserX, Info, ChevronDown, ChevronUp, Clock, LogIn, LogOut, AlertTriangle, KeyRound, Monitor, Globe } from 'lucide-react';
@@ -95,7 +95,7 @@ export default function Users() {
       {/* Role descriptions */}
       <div className="card bg-blue-50 border-blue-200">
         <div className="flex items-start gap-3">
-          <Info className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+          <Info className="w-5 h-5 text-blue-600 mt-0.5 shrink-0" />
           <div>
             <h3 className="font-medium text-blue-900 mb-2">User Role Permissions</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
@@ -219,7 +219,7 @@ export default function Users() {
                               <span className="text-xs text-gray-500">(you)</span>
                             )}
                             {user.isActive === false && (
-                              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">
+                              <span className="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-red-100 text-red-800">
                                 <UserX className="w-3 h-3 mr-1" />
                                 Inactive
                               </span>
@@ -606,7 +606,7 @@ function EditUserForm({
                 type="checkbox"
                 checked={isActive}
                 onChange={(e) => setIsActive(e.target.checked)}
-                className="rounded border-gray-300 text-primary focus:ring-primary"
+                className="rounded-sm border-gray-300 text-primary focus:ring-primary"
               />
               <span className="text-sm text-gray-700">Active account</span>
             </label>
