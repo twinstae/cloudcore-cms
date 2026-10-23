@@ -5,6 +5,8 @@ Type: implementation
 Status: open
 Blocked by: 18
 
+> 08 재검토 중. 에디터가 다시 정해지면 이 티켓을 그 결정에 맞게 다시 쓴다.
+
 ## 작업
 
 Card마다 “에디터에서 넣고 → 저장하고 → Site가 출력한다”를 끝까지 닫는다. 공통 패턴은 spec(`renderHTML`) + node view + valibot 스키마 + 테스트다.

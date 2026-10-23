@@ -5,6 +5,8 @@ Type: implementation
 Status: open
 Blocked by: 08, 10
 
+> 08 재검토 중. 에디터가 다시 정해지면 이 티켓을 그 결정에 맞게 다시 쓴다.
+
 ## 작업
 
 모노레포 스켈레톤 위에 Body의 계약을 세운다. 목표는 UI가 아니라 “저장하고 렌더할 수 있다”이다.

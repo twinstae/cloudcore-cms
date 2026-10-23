@@ -1,5 +1,7 @@
 # AGENTS.md - AI Assistant Instructions for Cloudcore CMS
 
+> **재작성 중 (ADR-0001).** 새 코드는 bun workspace `apps/api`(Hono Worker + Admin assets), `apps/admin`(Vite SPA), `apps/site`(Astro 정적)에 있다. 루트에서 `bun install`, `bun run check`(codegen, lint, format, typecheck, test). 진행 상황은 `.scratch/cms-rewrite/map.md`, **코드 컨벤션은 `docs/agents/conventions.md`**(반드시 따른다). 아래 내용은 `legacy/`에 옮긴 기존 구현에 대한 설명이다(경로 앞에 `legacy/`를 붙여 읽는다).
+
 This file provides guidance for AI coding assistants working with this codebase.
 
 ## Project Overview

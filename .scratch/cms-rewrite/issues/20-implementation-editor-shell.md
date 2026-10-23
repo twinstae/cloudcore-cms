@@ -5,6 +5,8 @@ Type: implementation
 Status: open
 Blocked by: 18, 09
 
+> 08 재검토 중. 에디터가 다시 정해지면 이 티켓을 그 결정에 맞게 다시 쓴다.
+
 ## 작업
 
 Tiptap은 headless이므로 Ghost 같은 쓰기 경험을 직접 만든다.

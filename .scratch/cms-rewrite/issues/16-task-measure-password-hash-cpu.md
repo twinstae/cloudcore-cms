@@ -2,7 +2,7 @@
 
 Label: wayfinder:task
 Type: task
-Status: open
+Status: resolved
 Blocked by:
 
 ## Question
@@ -19,3 +19,7 @@ ADR-0005(무료 플랜 필수) 때문에 Better Auth 기본 scrypt(약 70ms)를 
 Cloudflare 계정 로그인(`wrangler login`)이 필요하다. 에이전트가 인증된 wrangler를 쓸 수 없으면 사람에게 정확한 체크리스트를 넘긴다. 측정용 Worker는 측정이 끝나면 삭제한다.
 
 자세한 배경은 [Better Auth를 Workers + D1에서 쓸 수 있는가](01-research-better-auth-on-workers-d1.md)의 Answer를 본다.
+
+## Answer
+
+별도 측정 티켓 대신 [23 인증 슬라이스](23-implementation-auth-slice.md)에서 PBKDF2(WebCrypto)로 구현하고, 첫 배포 후 Observability CPU time으로 반복 횟수를 맞춘다. 측정 Worker를 따로 만들지 않는다.

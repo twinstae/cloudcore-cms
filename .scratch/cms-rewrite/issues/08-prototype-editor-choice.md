@@ -2,7 +2,7 @@
 
 Label: wayfinder:prototype
 Type: prototype
-Status: resolved
+Status: open
 Blocked by: 05
 
 ## Question
@@ -20,7 +20,17 @@ Blocked by: 05
 
 결과로 에디터를 정하고, Card 7종을 구현하는 방식과 Body JSON 스키마의 형태(valibot으로 parse할 범위)를 정리한다.
 
-## Answer
+## 재검토 (2026-10-23)
+
+아래 "이전 판단"은 사용자가 거부했다. "Lexical 0.13.1 고정 + #29220 때문에 탈락"은 근거가 약하다: 버그는 재현되지 않았고, 고칠 수 있는지와 비용은 측정하지 않았다. 다시 결정할 때까지 **에디터는 미정**이다.
+
+이 티켓은 에디터와 무관한 구현(뼈대, Tag, 인증, Post 메타데이터)을 막지 않는다. 다시 열 때는 리서치를 늘리지 말고 **반나절 timebox 스파이크 하나**로 끝낸다.
+1. keydown 229 → compositionstart 순서를 만드는 하네스로 Koenig 1.13에서 #29220이 재현되는지 본다. 재현되지 않으면 IME는 Koenig 탈락 사유가 아니다.
+2. 재현되면 Lexical 쪽 수정을 patch-package로 얹어 보고 그 diff 크기와 테스트 통과 여부를 적는다. 이게 "고치는 비용"의 실측이다.
+
+이전 판단에서 놓친 점: 08 측정의 Koenig 서버 렌더는 100블록 28–48ms(wall)라 무료 플랜 CPU 10ms(ADR-0005)와 부딪힐 수 있다. 하지만 Site가 정적 빌드(ADR-0004)이므로 html 렌더를 API 요청이 아니라 Site Build(또는 Admin 브라우저)에서 하면 이 비용은 사라진다. 이 경우 "Worker 번들/렌더 속도"는 비교 기준에서 빠지고, ADR-0002의 "저장할 때 렌더"를 고쳐야 한다. 에디터를 다시 고를 때 함께 정한다.
+
+## 이전 판단 (거부됨)
 
 **결정: Tiptap 3(3.32)으로 간다. Koenig는 쓰지 않는다.**
 

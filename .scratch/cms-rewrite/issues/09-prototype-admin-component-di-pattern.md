@@ -2,7 +2,7 @@
 
 Label: wayfinder:prototype
 Type: prototype
-Status: open
+Status: resolved
 Blocked by: 07
 
 ## Question
@@ -16,3 +16,7 @@ Tag 관리 기능 하나를 끝까지 만들어 보면서 Admin 컨벤션을 정
 - **Ark UI + Panda** recipe, 다크모드 토글
 
 결과로 Admin의 디렉터리 구조, 컴포넌트와 라우트 계약, fake를 두는 위치, 테스트 작성 규칙을 정한다(구현 티켓에 그대로 참조할 수 있는 형태).
+
+## Answer
+
+별도 prototype 대신 실제 기능으로 만든다: [22 Tag 수직 슬라이스](22-implementation-tag-slice.md). 컨벤션은 그 티켓의 코드가 기준이 된다.
