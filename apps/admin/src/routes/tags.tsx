@@ -1,8 +1,6 @@
-import type { CreateTagInput, Tag } from "@cloudcore/schema";
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { TagForm } from "../components/tags/TagForm";
-import { TagList } from "../components/tags/TagList";
+import { TagsScreen } from "../components/tags/TagsScreen";
 import { Heading, Page } from "../components/ui";
 import { createTag, deleteTag, tagsQueryOption, updateTag } from "../queries/tags";
 
@@ -14,7 +12,7 @@ export const Route = createFileRoute("/tags")({
     edit: typeof search.edit === "string" ? search.edit : undefined,
   }),
   loader: ({ context }) => context.queryClient.ensureQueryData(tagsQueryOption),
-  component: TagsPage,
+  component: TagsRoute,
   errorComponent: () => (
     <Page>
       <Heading>Tags</Heading>
@@ -23,56 +21,35 @@ export const Route = createFileRoute("/tags")({
   ),
 });
 
-function TagsPage() {
+function TagsRoute() {
   const { data: tags } = useSuspenseQuery(tagsQueryOption);
   const { edit } = Route.useSearch();
   const navigate = Route.useNavigate();
   const queryClient = useQueryClient();
-  const editing = tags.find((tag) => tag.id === edit);
 
   const refresh = () => queryClient.invalidateQueries({ queryKey: tagsQueryOption.queryKey });
-  const closeEditor = () => navigate({ to: "/tags", search: {} });
-
-  const handleCreate = async (values: CreateTagInput) => {
-    await createTag(values);
-    await refresh();
-  };
-
-  const handleUpdate = async (tag: Tag, values: CreateTagInput) => {
-    await updateTag(tag.id, values);
-    await refresh();
-    await closeEditor();
-  };
-
-  const handleDelete = async (tag: Tag) => {
-    await deleteTag(tag.id);
-    await refresh();
-    if (editing?.id === tag.id) await closeEditor();
-  };
+  const goTo = (id: string | undefined) =>
+    void navigate({ to: "/tags", search: id ? { edit: id } : {} });
 
   return (
-    <Page>
-      <Heading>Tags</Heading>
-      {editing ? (
-        <TagForm
-          key={editing.id}
-          submitLabel="저장"
-          defaultValues={{
-            name: editing.name,
-            slug: editing.slug,
-            description: editing.description,
-          }}
-          onSubmit={(values) => handleUpdate(editing, values)}
-          onCancel={closeEditor}
-        />
-      ) : (
-        <TagForm submitLabel="추가" onSubmit={handleCreate} />
-      )}
-      <TagList
-        tags={tags}
-        onEdit={(tag) => navigate({ to: "/tags", search: { edit: tag.id } })}
-        onDelete={handleDelete}
-      />
-    </Page>
+    <TagsScreen
+      tags={tags}
+      editingId={edit}
+      onEditingChange={goTo}
+      onCreate={async (values) => {
+        await createTag(values);
+        await refresh();
+      }}
+      onUpdate={async (tag, values) => {
+        await updateTag(tag.id, values);
+        await refresh();
+        goTo(undefined);
+      }}
+      onDelete={async (tag) => {
+        await deleteTag(tag.id);
+        await refresh();
+        if (edit === tag.id) goTo(undefined);
+      }}
+    />
   );
 }

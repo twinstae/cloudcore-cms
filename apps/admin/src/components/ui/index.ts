@@ -1,5 +1,6 @@
 export { Badge, type BadgeProps } from "./badge";
 export { Button, type ButtonProps } from "./button";
+export { Dialog } from "./dialog";
 export { FieldErrorText, FieldHelperText, FieldLabel, FieldRoot } from "./field";
 export { Form, type FormProps } from "./form";
 export { Heading, type HeadingProps } from "./heading";

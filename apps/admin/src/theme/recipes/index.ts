@@ -1,5 +1,12 @@
 import { badge } from "./badge";
 import { button } from "./button";
+import {
+  dialogBackdrop,
+  dialogContent,
+  dialogDescription,
+  dialogPositioner,
+  dialogTitle,
+} from "./dialog";
 import { fieldError, fieldHelper, fieldLabel, fieldRoot } from "./field";
 import { form } from "./form";
 import { heading } from "./heading";
@@ -18,6 +25,11 @@ import { textarea } from "./textarea";
 export const recipes = {
   badge,
   button,
+  dialogBackdrop,
+  dialogContent,
+  dialogDescription,
+  dialogPositioner,
+  dialogTitle,
   fieldError,
   fieldHelper,
   fieldLabel,

@@ -1,7 +1,8 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { HealthStatus } from "../components/HealthStatus";
-import { Heading, Page } from "../components/ui";
+import { ThemeToggle } from "../components/ThemeToggle";
+import { Heading, HStack, Page } from "../components/ui";
 import { healthQueryOption } from "../queries/health";
 
 export const Route = createFileRoute("/")({
@@ -18,7 +19,10 @@ function HomePage() {
 function HomeLayout({ connected }: { connected: boolean }) {
   return (
     <Page>
-      <Heading>Cloudcore</Heading>
+      <HStack justify="between">
+        <Heading>Cloudcore</Heading>
+        <ThemeToggle />
+      </HStack>
       <HealthStatus connected={connected} />
     </Page>
   );
