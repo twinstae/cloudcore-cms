@@ -39,9 +39,9 @@ Label: wayfinder:map
 - Admin: React + **TanStack Router**(파일 기반, tsr) SPA. 서버 캐시는 **TanStack Query**, 폼은 **react-hook-form**(`SimpleForm`/`SimpleField`처럼 value/onChange 없는 컴포넌트), 그 밖의 클라이언트 상태는 **jotai**(앱 전역의 작은 UI 상태)와 **bunja**(생명주기와 스코프가 있는 상태, 예: 에디터 세션, 자동 저장 큐, 다이얼로그 세션). 라우터 상태는 URL로 다룬다. `useState`로 폼 상태를 들고 있지 않는다.
 - 컴포넌트 설계: 기능 컴포넌트는 데이터 의존성을 props(`queryOptions`, `onSubmit` 등)로 받고 API 클라이언트를 알지 못한다. 라우트(페이지)는 의존성을 주입하고 합성만 한다. 상태는 컴포넌트마다 격리해서 따로 테스트할 수 있어야 한다.
 - 스타일: **Panda CSS + Ark UI**(Tailwind 대신). Panda preset은 Admin과 Site가 공유한다. **다크모드**를 처음부터 넣는다(기본은 시스템 설정, 수동 토글, semantic token).
-- 에디터: Ghost 같은 WYSIWYG. Koenig 또는 Lexical을 우선 검토한다. Card 7종: image, code, embed, callout, divider, html, CTA 버튼.
+- 에디터: **Tiptap 3**으로 직접 만든다(08 결정). Ghost 같은 WYSIWYG(+ 메뉴, 슬래시 메뉴, 툴바)를 직접 구현한다. Card 7종: image, code, embed, callout, divider, html, CTA 버튼. Card는 React 없는 spec(`renderHTML`)과 node view를 분리해 API Worker가 spec만 쓴다.
 - 테스트: unit / component / API / e2e
-  - component: **Storybook story를 컴포넌트마다** 만들고 Vitest browser mode에서 **`@siheom/react`**로 테스트한다. 에디터 한국어 입력은 **`@siheom/ime`**로 테스트한다.
+  - component: **Storybook story를 컴포넌트마다** 만들고 Vitest browser mode에서 **`@siheom/react`**로 테스트한다. 에디터 한국어 입력은 **`@siheom/ime-cdp`**로 CDP 조합을 contenteditable에 보내고 DOM과 에디터 상태를 함께 검사한다(08).
   - API: `@cloudflare/vitest-plugin`(`vitest-pool-workers`는 deprecated). **Vitest는 모노레포 전체에서 4.1.x로 고정**
   - e2e: 모킹 없이 전체 스택을 띄워 연결만 확인하는 수준으로 최소화한다. 대부분의 기능은 e2e 없이 검증할 수 있어야 한다.
 - 품질 도구: 타입체크는 **tsrs**(안 되는 부분만 `tsc` TS7로 대신), 린트는 **oxlint**, 포맷은 **oxfmt**. **lefthook pre-push**에서 lint, format check, typecheck, unit/component/API 테스트를 모두 통과해야 한다. e2e는 수동으로 실행한다.
@@ -61,6 +61,7 @@ Label: wayfinder:map
 - [에디터 후보(Koenig, Lexical, Tiptap)와 @siheom/ime](issues/05-research-editor-candidates.md): 세 후보 모두 Workers에서 HTML 렌더가 가능하다(ADR-0002 유지). ⚠ Koenig는 Lexical 0.13.1 고정 + 한글 입력 버그(Ghost #29220). Tiptap static-renderer가 가장 단순하다. `@siheom/ime`는 Chrome contenteditable 조합을 아직 지원하지 않는다
 - [Site Build 트리거와 정적 Astro 배포](issues/17-research-site-build-trigger.md): Workers Builds **Deploy Hook**(Free 가능, 인증 없이 URL이 secret)을 POST한다. 대기 중인 빌드는 플랫폼이 합쳐 주므로 debounce가 거의 필요 없다. 정적 Astro는 어댑터 없이 `assets`만 쓴다(정적 요청은 무료, 무제한). ⚠ 계정 전체 동시 빌드 1개, 빌드 20분 상한
 - [참고 레포에서 가져올 컨벤션](issues/07-research-reference-conventions.md): SimpleForm/SimpleField(valibot Standard Schema resolver), Ark+Panda slot recipe 래퍼, mock 금지 규칙과 fakes alias, siheom 작성 규칙, bunja+jotai 패턴 초안. ⚠ `@siheom/ime`가 기본 프로필에서는 contenteditable 조합을 에뮬레이션하지 않음(`@siheom/ime-cdp` 확인 필요)
+- [어떤 에디터를 쓸 것인가](issues/08-prototype-editor-choice.md): **Tiptap 3**로 간다. 서버 렌더는 DOM 없이 되고(gzip 197 KiB, nodejs_compat 불필요), Card 마크업을 우리가 소유하며, Koenig의 Lexical 0.13.1 고정과 Ghost 마크업/영어 UI를 안고 가지 않는다. Card는 spec(renderHTML)+node view 분리. Body는 Tiptap JSON을 valibot으로 경계에서 parse. 한글 IME 테스트는 `@siheom/ime-cdp`를 contenteditable로 감싼다(CDP는 keydown 229 순서를 재현하지 않아 IME 버그 판정에는 부족). 구현 티켓 18–20 생성. ⚠ Tiptap #4108(조합 중 Enter) 회귀 테스트를 셸 티켓에서 먼저
 
 ## Not yet specified
 

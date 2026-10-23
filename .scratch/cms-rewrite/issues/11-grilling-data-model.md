@@ -3,7 +3,7 @@
 Label: wayfinder:grilling
 Type: grilling
 Status: open
-Blocked by: 01, 08
+Blocked by: 01
 
 ## Question
 
